@@ -872,3 +872,75 @@ class RangeExtraction:
 
 RangeExtraction.test_range_extraction()
 
+class HumanReadableDurationFormat:
+    """
+   function which formats a duration, given as a number of seconds, in a human-friendly way.
+
+    The function must accept a non-negative integer. 
+    If it is zero, it just returns "now". 
+    Otherwise, the duration is expressed as a combination of years, days, hours, minutes and seconds.
+
+    It is much easier to understand with an example:
+
+        * For seconds = 62   return  "1 minute and 2 seconds"
+        * For seconds = 3662 return  "1 hour, 1 minute and 2 seconds"
+    """
+
+    def format_01(seconds):
+        if seconds == 0:
+            return "now"
+
+        time_elem = [
+            ("year", 365 * 24 * 60 * 60),
+            ("day", 24 * 60 * 60),
+            ("hour", 60 * 60),
+            ("minute", 60),
+            ("second", 1),
+        ]
+
+        elements = []
+        for name, value in time_elem:
+            qty = seconds // value
+            if qty == 0:
+                continue
+            # seconds = seconds % value
+            seconds -= value * qty
+            elements.append(f"{qty} {name}" + ("s" if qty > 1 else ""))
+
+        if len(elements) == 1:
+            result = f"{elements[-1]}"
+        else:
+            result = f", ".join(e for e in elements[0:-1]) +  f" and {elements[-1]}"
+
+        return result
+
+    def test():
+        print("HumanReadableDurationFormat test")
+        data = {
+            0: "now",
+            1: "1 second",
+            2: "2 seconds",
+            60: "1 minute",
+            3600: "1 hour",
+            62: "1 minute and 2 seconds",
+            120: "2 minutes",
+            3662: "1 hour, 1 minute and 2 seconds",
+            86400: "1 day",
+            2 * 86400: "2 days",
+            365 * 24 * 60 * 60: "1 year",
+        }
+        format_fun_list = [
+            HumanReadableDurationFormat.format_01,
+            #HumanReadableDurationFormat.format_02,
+        ]
+
+        for format_fun in format_fun_list:
+            for input, expected in data.items():
+                result = format_fun(input)
+                if result != expected:
+                    print(f"{input=}")
+                    print(f"{result=}")
+                    print(f"{expected=}")
+                assert result == expected
+
+HumanReadableDurationFormat.test()
