@@ -748,3 +748,127 @@ class MostFrequentlyWords:
     assert top_3_words("  '''  ") ==  []
 
 MostFrequentlyWords()
+
+class RangeExtraction:
+    """
+    Range Extraction
+
+    A format for expressing an ordered list of integers is to use a comma separated list of either individual integers
+    or a range of integers denoted by the starting integer separated from the end integer in the range by a dash, '-'.
+
+    The range includes all integers in the interval including both endpoints.
+    It is not considered a range unless it spans at least 3 numbers. For example "12,13,15-17"
+
+    Complete the solution so that it takes a list of integers in increasing order
+    and returns a correctly formatted string in the range format.
+    solution([-10, -9, -8, -6, -3, -2, -1, 0, 1, 3, 4, 5, 7, 8, 9, 10, 11, 14, 15, 17, 18, 19, 20])
+    # returns "-10--8,-6,-3-1,3-5,7-11,14,15,17-20"
+    Example:
+    """
+
+    def get_range_01(args_raw):
+        elements = []
+        range_count = 0
+        args = sorted(args_raw)
+        args.append(args_raw[0] - 1) # add an element at the end that will break any range
+        for i in range(len(args) -1):
+            #print(f"\t {i=} p={args[i-1]} n={args[i]}")
+            if args[i+1] - args[i] == 1:
+                #print(f"\t\t  increment")
+                if range_count == 0:
+                    start_range_k = args[i]
+                range_count += 1
+            else:
+                #print(f"\t\t  no increment")
+                if range_count > 1: 
+                    elements.append(f"{start_range_k}-{args[i]}")
+                    #print(f"\t\t\t  finish range add: {elements[-1]}")
+                else:
+                    if range_count == 1:
+                        elements.append(f"{args[i-1]}")
+                        #print(f"\t\t\t  i-1 add: {elements[-1]}")
+                    elements.append(f"{args[i]}")
+                    #print(f"\t\t\t   add: {elements[-1]}v********")
+                range_count = 0
+
+        return ",".join(elements)
+
+    def get_range_02(args_raw):
+        elements = []
+        start_range_i = 0
+        args = sorted(args_raw)
+        args.append(None) # add an element at the end that will break any range
+        # print(args)
+        for i in range(len(args) -1):
+            #print(f"\t{i}: {args[i+1]} {args[i]}   {args[start_range_i]}")
+            if args[i+1] != args[i] + 1:
+                #rint(f"\t\t  no increment", end=" ")
+                if i - start_range_i > 1:
+                    #elements.append(f"{args[i+1]}")
+                    #print(f"\t\t\t  finish range add: {elements[-1]}")
+                    #print("range")
+                    elements.append(f"{args[start_range_i]}-{args[i]}")
+                else:
+                    #print("simple", end=" ")
+                    if i - start_range_i == 1:
+                        #print("add prev")
+                        elements.append(f"{args[start_range_i]}")
+                    elements.append(f"{args[i]}")
+                    #print()
+                    #print(f"\t\t\t   add: {elements[-1]}v********")
+                start_range_i = i + 1
+
+
+        return ",".join(elements)
+
+    def get_range_03(arr):
+        elements = []
+        b = arr[0] # inital element
+        a = arr[0] # start_range_k
+        #for n in arr[1:] + [b -1]:
+        for n in arr[1:] + [None]:
+            if n != b + 1:
+            #if n - b != 1:  # break range
+                e = f"{b}" if a == b else "{}{}{}".format(a, "," if a+1 == b else "-", b)
+                if a == b: # simple
+                    e = f"{b}"
+                    pass
+                else:
+                    if a + 1 == b:
+                        e = f"{a},{b}"
+                    else:
+                        e = f"{a}-{b}"
+                    pass 
+                elements.append(e)
+                a = n # start a new range
+            b = n
+        return ",".join(elements)
+
+    def test_range_extraction():
+        print("RangeExtraction test")
+        test_data = {
+            "1-3": [1, 2, 3],
+            "1,3,5": [1, 3, 5],
+            "1-3,5": [1, 2, 3, 5],
+            "1,3-5": [1, 3, 4, 5],
+            "1-3": [1, 2, 3],
+            '-6,-3-1': [-6,-3,-2,-1,0,1],
+            "-3--1,2,10,15,16,18-20": [-3,-2,-1,2,10,15,16,18,19,20],
+            '-6,-3-1,3-5,7-11,14,15,17-20': [-6,-3,-2,-1,0,1,3,4,5,7,8,9,10,11,14,15,17,18,19,20],
+        }
+        get_range_fun_list = [
+            RangeExtraction.get_range_01,
+            RangeExtraction.get_range_02,
+            RangeExtraction.get_range_03,
+        ]
+        for get_range_fun in get_range_fun_list:
+            # print(f"{get_range_fun}")
+            for expected, input in test_data.items():
+                result = get_range_fun(input)
+                if expected != result:
+                    print(f"  result: {result}")
+                    print(f"expected: {expected}")
+                assert expected == result
+
+RangeExtraction.test_range_extraction()
+
