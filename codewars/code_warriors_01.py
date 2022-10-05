@@ -944,3 +944,178 @@ class HumanReadableDurationFormat:
                 assert result == expected
 
 HumanReadableDurationFormat.test()
+
+class SudokuValidator:
+
+    def valid_solution_01(input):
+        valid = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+        for row in input:
+            if valid != sorted(row):
+                return False
+
+        for col in zip(*input):
+            if valid != sorted(col):
+                return False
+
+        # validate blocks  
+        for x in range(3):
+            three_rows = input[x * 3 : 3 + x * 3 ]
+            for y in range(3):
+                block = [row[y * 3 : 3 + y * 3] for row in three_rows]
+                flat_block = [item for sublist in block for item in sublist]
+
+                # block1 = []
+                # for row in three_rows:
+                #     block1 += row[y * 3 : 3 + y * 3]
+
+                if valid != sorted(flat_block):
+                    return False
+    
+        return True
+
+    def valid_solution_02(input):
+        """ using np
+        """
+        import numpy as np
+        input_np = np.array(input)
+
+        valid = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+        # validate blocks  
+        i = 0
+        for x in range(3):
+            for y in range(3):
+                # validate blocks
+                if not valid == sorted(input_np[3 * x: 3 * (x +1) , 3 * y: 3 * (y +1)].flatten()):
+                    return False
+
+                # validate col
+                if not valid == sorted(input_np[i, :]):
+                    return False
+
+                 # validate rows
+                if not valid == sorted(input_np[:, i]):
+                    return False
+
+                i += 1
+
+        return True
+
+    def valid_solution_03(input):
+        valid = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+        for i in range(9):
+        
+            # validate rows
+            row = input[i][:]
+            if valid != sorted(row):
+                return False
+
+
+            # validate columns
+            col = [row[i] for row in input]
+            if valid != sorted(col):
+                return False
+
+        # validate blocks  
+        for x in range(3):
+            three_rows = input[0 + 3 * x : 3 + 3 * x]
+            for y in range(3):
+                block = [row[0 + 3 * y: 3 + 3 * y] for row in three_rows]
+                flat_block = [item for sublist in block for item in sublist]
+                if valid != sorted(flat_block):
+                    return False
+    
+        return True
+
+    def test_validator():
+        print("SudokuValidator test")
+
+        funtion_list = [
+            SudokuValidator.valid_solution_01,
+            SudokuValidator.valid_solution_02,
+            SudokuValidator.valid_solution_03,
+        ]
+    
+        test_data = (
+            (True, [
+                [5, 3, 4, 6, 7, 8, 9, 1, 2], 
+                [6, 7, 2, 1, 9, 5, 3, 4, 8],
+                [1, 9, 8, 3, 4, 2, 5, 6, 7],
+                [8, 5, 9, 7, 6, 1, 4, 2, 3],
+                [4, 2, 6, 8, 5, 3, 7, 9, 1],
+                [7, 1, 3, 9, 2, 4, 8, 5, 6],
+                [9, 6, 1, 5, 3, 7, 2, 8, 4],
+                [2, 8, 7, 4, 1, 9, 6, 3, 5],
+                [3, 4, 5, 2, 8, 6, 1, 7, 9],
+            ]),
+
+            (False, [
+                [5, 3, 4, 6, 7, 8, 9, 1, 2], 
+                [6, 7, 2, 1, 9, 0, 3, 4, 9],
+                [1, 0, 0, 3, 4, 2, 5, 6, 0],
+                [8, 5, 9, 7, 6, 1, 0, 2, 0],
+                [4, 2, 6, 8, 5, 3, 7, 9, 1],
+                [7, 1, 3, 9, 2, 4, 8, 5, 6],
+                [9, 0, 1, 5, 3, 7, 2, 1, 4],
+                [2, 8, 7, 4, 1, 9, 6, 3, 5],
+                [3, 0, 0, 4, 8, 1, 1, 7, 9],
+            ]),
+    
+            (True, [
+                [1, 3, 2, 5, 7, 9, 4, 6, 8]
+                ,[4, 9, 8, 2, 6, 1, 3, 7, 5]
+                ,[7, 5, 6, 3, 8, 4, 2, 1, 9]
+                ,[6, 4, 3, 1, 5, 8, 7, 9, 2]
+                ,[5, 2, 1, 7, 9, 3, 8, 4, 6]
+                ,[9, 8, 7, 4, 2, 6, 5, 3, 1]
+                ,[2, 1, 4, 9, 3, 5, 6, 8, 7]
+                ,[3, 6, 5, 8, 1, 7, 9, 2, 4]
+                ,[8, 7, 9, 6, 4, 2, 1, 5, 3]
+            ]),
+
+            (False, [
+                 [1, 3, 2, 5, 7, 9, 4, 6, 8]
+                ,[4, 9, 8, 2, 6, 1, 3, 7, 5]
+                ,[7, 5, 6, 3, 8, 4, 2, 1, 9]
+                ,[6, 4, 3, 1, 5, 8, 7, 9, 2]
+                ,[5, 2, 1, 7, 9, 3, 8, 4, 6]
+                ,[9, 8, 7, 4, 2, 6, 5, 3, 1]
+                ,[2, 1, 4, 9, 3, 5, 6, 8, 7]
+                ,[3, 6, 5, 8, 1, 7, 9, 2, 4]
+                ,[8, 7, 9, 6, 4, 2, 1, 3, 5]
+            ]),
+
+            (False, [
+                [1, 3, 2, 5, 7, 9, 4, 6, 8]
+                ,[4, 9, 8, 2, 6, 0, 3, 7, 5]
+                ,[7, 0, 6, 3, 8, 0, 2, 1, 9]
+                ,[6, 4, 3, 1, 5, 0, 7, 9, 2]
+                ,[5, 2, 1, 7, 9, 0, 8, 4, 6]
+                ,[9, 8, 0, 4, 2, 6, 5, 3, 1]
+                ,[2, 1, 4, 9, 3, 5, 6, 8, 7]
+                ,[3, 6, 0, 8, 1, 7, 9, 2, 4]
+                ,[8, 7, 0, 6, 4, 2, 1, 3, 5]
+            ]),
+
+            (False, [
+                [1, 2, 3, 4, 5, 6, 7, 8, 9]
+                ,[2, 3, 4, 5, 6, 7, 8, 9, 1]
+                ,[3, 4, 5, 6, 7, 8, 9, 1, 2]
+                ,[4, 5, 6, 7, 8, 9, 1, 2, 3]
+                ,[5, 6, 7, 8, 9, 1, 2, 3, 4]
+                ,[6, 7, 8, 9, 1, 2, 3, 4, 5]
+                ,[7, 8, 9, 1, 2, 3, 4, 5, 6]
+                ,[8, 9, 1, 2, 3, 4, 5, 6, 7]
+                ,[9, 1, 2, 3, 4, 5, 6, 7, 8]
+            ]),
+        )
+
+        for funtion in funtion_list:
+            for expected, input in test_data:
+                result = funtion(input)
+                if result != expected:
+                    print(f"{result=} {expected=}")
+                    [print(l) for l in input]
+                assert result == expected
+
+SudokuValidator.test_validator()
