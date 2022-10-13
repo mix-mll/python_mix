@@ -1018,6 +1018,63 @@ class countSheeps:
 
 countSheeps.test()
 
+class ReverseWords:
+    """
+    Reverse every other word in a given string, then return the string. 
+    Throw away any leading or trailing whitespace, while ensuring there is exactly one space between each word. 
+    Punctuation marks should be treated as if they are a part of the word in this kata.
+    """
+    def reverse_alternate_01(input):
+        words = []
+        reverse = False
+        for w in input.split():
+            if reverse:
+                w = w[::-1]
+            words.append(w)
+            reverse = not reverse
+        return " ".join(words)
+
+    def reverse_alternate_02(input):
+        words = input.split()
+        for i in range(1, len(words) + 1, 2):
+            words[i] = words[i][::-1]
+        # iterator[start:stop:step]
+        # words[1::2] = [word[::-1] for word in words[1::2]]
+        return " ".join(words)
+
+
+    def reverse_alternate_03(input):
+        # words = []
+        # for i, w in enumerate(input.split()):
+        #     w = w[::-1] if i % 2 else w
+        #     words.append(w)
+        # return " ".join(words)
+        return " ".join([w[::-1] if i % 2 else w for i, w in enumerate(input.split())])
+
+    def test():
+        function_list  = [
+            ReverseWords.reverse_alternate_01,
+            ReverseWords.reverse_alternate_02,
+            ReverseWords.reverse_alternate_03,
+        ]
+
+        test_data = [
+            ("123 123 abc abc", "123 321 abc cba"),
+            ("Reverse this string, please!", "Reverse siht string, !esaelp"),
+            ("I really don't like reversing strings!","I yllaer don't ekil reversing !sgnirts"),
+        ]
+
+        for fun in function_list:
+            for input, expected in test_data:
+                result = fun(input)
+                if not result == expected:
+                    print(result)
+                    print(expected)
+                assert result == expected
+        print("ReverseWords tested")
+
+ReverseWords.test()
+
 class SudokuValidator:
 
     def valid_solution_01(input):
