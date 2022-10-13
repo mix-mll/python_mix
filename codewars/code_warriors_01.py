@@ -986,6 +986,38 @@ class CountTheDigit:
 
 CountTheDigit.testCountTheDigit() 
 
+class countSheeps:
+
+    def count_sheeps_01(sheep_array):
+        # return sum(1 for ship in sheep_array if ship is True)
+        return sheep_array.count(True)
+
+
+    def test():
+        function_list  = [
+            countSheeps.count_sheeps_01,
+        ]
+
+        test_data = [
+            [0, [False]],
+            [0, [False, None]],
+            [0, [False, False]],
+            [1, [True]],
+            [1, [True, False]],
+            [2, [True, True]],
+            [2, [True, True]],
+            [2, [True, True, False]],
+            [2, [True, True, False, False]],
+        ]
+
+        for fun in function_list:
+            for expected, input in test_data:
+                result = fun(input)
+                assert result == expected
+        print("countSheeps tested")
+
+countSheeps.test()
+
 class SudokuValidator:
 
     def valid_solution_01(input):
