@@ -945,6 +945,47 @@ class HumanReadableDurationFormat:
 
 HumanReadableDurationFormat.test()
 
+
+class CountTheDigit:
+
+    def nb_dig(n, d):
+        from collections import Counter
+        r = 0
+        for k in range(n + 1):
+            count = Counter(str(k ** 2))
+            r += count[str(d)]
+        return r
+
+    def nb_dig_01(n, d):
+        return sum(str(k ** 2).count(str(d)) for k in range(n+1))
+
+    def testCountTheDigit():
+
+        functions_list = [
+            CountTheDigit.nb_dig,
+            CountTheDigit.nb_dig_01,
+        ]
+
+        test_data = [
+            [(10, 1), 4],
+            [(25, 1), 11],
+            [(5750, 0), 4700],
+            [(11011, 2), 9481],
+            [(12224, 8), 7733],
+            [(11549, 1), 11905],
+        ]
+
+        for fun in functions_list:
+            for input, expected in test_data:
+                result = fun(*input)
+                if result != expected:
+                    print(input, expected, result)
+                assert result == expected
+
+        print("CountTheDigit tested")
+
+CountTheDigit.testCountTheDigit() 
+
 class SudokuValidator:
 
     def valid_solution_01(input):
