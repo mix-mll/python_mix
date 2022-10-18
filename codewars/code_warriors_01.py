@@ -1058,6 +1058,7 @@ class ReverseWords:
             ReverseWords.reverse_alternate_03,
         ]
 
+        # for input, expected 
         test_data = [
             ("123 123 abc abc", "123 321 abc cba"),
             ("Reverse this string, please!", "Reverse siht string, !esaelp"),
@@ -1071,6 +1072,17 @@ class ReverseWords:
                     print(result)
                     print(expected)
                 assert result == expected
+        
+        # map try 1: simple, one function, many imputs
+        # result = map(ReverseWords.reverse_alternate_01, test_data)
+        # doesn't work because test_data[i] = (input, expected)
+        # not so clear if there will be a mismatch since the assert is in a list
+        inputs = [val[0] for val in test_data]
+        expected_values = [val[1] for val in test_data]
+        for fun in function_list:
+            results = list(map(fun, inputs))
+        assert expected_values == results
+
         print("ReverseWords tested")
 
 ReverseWords.test()
