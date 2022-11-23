@@ -1261,3 +1261,64 @@ class SudokuValidator:
                 assert result == expected
 
 SudokuValidator.test_validator()
+
+
+class MSE:
+    """ Mean Square Error
+    """
+
+    def solution01(array_a, array_b):
+        # s = 0
+        # for a, b in zip(array_a, array_b):
+        #     s += (a - b) ** 2
+        # r =  s / len(array_a)
+        # return r
+        return sum((a - b) ** 2 for a, b in zip(array_a, array_b)) / len(array_a)
+
+    def solution02(array_a, array_b):
+        from statistics import mean
+        return mean((a - b) ** 2 for a, b in zip(array_a, array_b))
+  
+    def solution03(array_a, array_b):
+        from statistics import mean
+        return mean((array_a[i] - array_b[i]) ** 2 for i in range(len(array_a)))
+
+    def solution11(array_a, array_b):
+        import numpy as np
+        # return (np.square(np.array(array_a) - np.array(array_b))).mean()
+        # return np.square(np.subtract(array_a, array_b)).mean()
+        # return ((np.array(array_a) - np.array(array_b)) **2 ).mean()
+        return (np.subtract(array_a, array_b) ** 2).mean()
+
+    def solution21(array_a, array_b):
+        import pandas as pd
+        return ((pd.DataFrame(array_a) - pd.DataFrame(array_b)) ** 2).mean()[0]
+
+    def test():
+        test_data = [
+            (9, ([1,2,3], [4,5,6])),
+            (16.5, ([10, 20, 10, 2], [10, 25, 5, -2])),
+            (1, ([0, -1], [-1, 0])),
+            (0, ([10, 10], [10, 10])),
+            ]
+
+        functions = [
+            MSE.solution01,
+            MSE.solution02,
+            MSE.solution03,
+            MSE.solution11,
+            MSE.solution21,
+        ]
+
+        for funtion in functions:
+            for data in test_data:
+                expected, arrays = data
+                result = funtion(*arrays)
+                if expected != result:
+                    print(f"{result=} {expected=} {arrays=}")
+                assert expected == result
+
+        print("MSE test")
+
+
+MSE.test()
