@@ -1,6 +1,8 @@
 """
-    pytest ews/ews_interview_test.py
+    pytest ews/ews_interview_test.py --log-cli-level=INFO
 """
+import logging
+
 def fun(input):
     result = ""
     index = 0
@@ -37,4 +39,5 @@ def test_fun():
     }
     for input, expected_output in cases.items():
         actual_output = fun(input)
+        logging.info(f"{expected_output} {actual_output}")
         assert expected_output == actual_output
