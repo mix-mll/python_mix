@@ -9,7 +9,8 @@ def fun(input):
     count = 1
     letter = input[index]
     while index < len(input):
-        deb = f"{index=}{count=}{letter}"
+
+        # deb = f"{index=}{count=}{letter}"
         # print (deb)
         if index == len(input) -1:
             result = result + f"{letter}{count}"
@@ -36,6 +37,8 @@ def test_fun():
         "a": "a1",
         "aa": "a2",
         "ab": "a1b1",
+        "abc": "a1b1c1",
+        "abccc": "a1b1c3",
     }
     for input, expected_output in cases.items():
         actual_output = fun(input)
