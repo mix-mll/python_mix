@@ -3,7 +3,7 @@
 """
 import logging
 
-def fun(input):
+def funX(input):
     result = ""
     index = 0
     count = 1
@@ -13,9 +13,7 @@ def fun(input):
         letter = input[index]
         if index == len(input) - 1: # last case
             result = result + f"{letter}{count}"
-
             break
-            # result = result + f"{letter}{count}"
 
         if letter == input[index + 1]:
             count+= 1
@@ -30,6 +28,30 @@ def fun(input):
     return result
 
 
+def fun(input):
+    result = ""
+    index = 0
+    count = 1
+    while index < len(input):
+        # deb = f"{index=}{count=}{letter}"
+        # print (deb)
+        letter = input[index]
+        if index == len(input) - 1: # last case
+            result = result + f"{letter}{count}"
+            break
+
+        if letter == input[index + 1]:
+            count+= 1
+        else:
+            result = result + f"{letter}{count}"
+            # print (result)
+            letter = input[index + 1]
+            count = 1
+        
+        index+=1
+    
+    return result
+
 def test_fun():
     cases = {
         "aabbba": "a2b3a1",
@@ -38,6 +60,7 @@ def test_fun():
         "ab": "a1b1",
         "abc": "a1b1c1",
         "abccc": "a1b1c3",
+        "": ""
     }
     for input, expected_output in cases.items():
         actual_output = fun(input)
