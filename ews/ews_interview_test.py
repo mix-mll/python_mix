@@ -3,6 +3,7 @@
 """
 import logging
 
+
 def funX(input):
     result = ""
     index = 0
@@ -13,12 +14,12 @@ def funX(input):
             result += f"{letter}{count}"
             break
         if letter == input[index + 1]:
-            count+= 1
+            count += 1
         else:
             result += f"{letter}{count}"
             letter = input[index + 1]
             count = 1
-        index+=1
+        index += 1
     return result
 
 
@@ -28,7 +29,7 @@ def fun(input):
     count = 1
     while index < len(input):
         letter = input[index]
-        if  index + 1 < len(input):
+        if index + 1 < len(input):
             if letter == input[index + 1]:
                 count += 1
             else:
@@ -37,7 +38,7 @@ def fun(input):
                 count = 1
         else:
             result += f"{letter}{count}"
-        index+=1    
+        index += 1
     return result
 
 
@@ -49,7 +50,7 @@ def test_fun():
         "ab": "a1b1",
         "abc": "a1b1c1",
         "abccc": "a1b1c3",
-        "": ""
+        "": "",
     }
     for input, expected_output in cases.items():
         actual_output = fun(input)
