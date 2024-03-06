@@ -7,12 +7,11 @@ def fun(input):
     result = ""
     index = 0
     count = 1
-    letter = input[index]
     while index < len(input):
-
         # deb = f"{index=}{count=}{letter}"
         # print (deb)
-        if index == len(input) -1:
+        letter = input[index]
+        if index == len(input) - 1: # last case
             result = result + f"{letter}{count}"
 
             break
