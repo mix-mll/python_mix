@@ -1,0 +1,33 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0 # Get the latest from: https://github.com/pre-commit/pre-commit-hooks/releases
+    hooks:
+      # Standard lint
+      - id: check-merge-conflict
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+
+      # Specific file format linters
+      - id: check-json
+      - id: check-yaml
+      - id: check-toml
+      - id: check-shebang-scripts-are-executable
+      - id: check-symlinks
+
+      # Security linters
+      - id: detect-private-key
+
+  - repo: https://github.com/psf/black
+    rev: 23.1.0 # Get the latest from: https://github.com/psf/black/releases
+    hooks:
+      - id: black
+
+  - repo: https://github.com/PyCQA/isort
+    rev: 5.12.0
+    hooks:
+    - id: isort
+
+  - repo: https://github.com/PyCQA/flake8
+    rev: 6.0.0
+    hooks:
+    - id: flake8
