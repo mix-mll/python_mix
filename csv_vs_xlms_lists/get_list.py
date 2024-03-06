@@ -5,14 +5,24 @@ import os
 
 import openpyxl
 
-
 # file_name, column_index, delimiter, with_header
-EMPLOYEES_EMAIL_FILE = ["csv_vs_xlms_lists/employees_email.csv", 2, ";", True] # fix list
-CONFIRMED_EMPLOYEES_FILE = ["csv_vs_xlms_lists/Christmas Party _ *.xlsx", 3, ";", True] # file name patern that gets updated and get the latest
-PENDING_EMAIL_FILE = "csv_vs_xlms_lists/pending_email.csv" # result list
+EMPLOYEES_EMAIL_FILE = [
+    "csv_vs_xlms_lists/employees_email.csv",
+    2,
+    ";",
+    True,
+]  # fix list
+CONFIRMED_EMPLOYEES_FILE = [
+    "csv_vs_xlms_lists/Christmas Party _ *.xlsx",
+    3,
+    ";",
+    True,
+]  # file name patern that gets updated and get the latest
+PENDING_EMAIL_FILE = "csv_vs_xlms_lists/pending_email.csv"  # result list
+
 
 def get_emails_from_csv(file_name, column_index, delimiter, with_header):
-    '''
+    """
     Returns the sum of two decimal numbers in binary digits.
 
             Parameters:
@@ -21,7 +31,7 @@ def get_emails_from_csv(file_name, column_index, delimiter, with_header):
 
             Returns:
                     emails (set[string]): list of the emails
-    '''
+    """
     logging.info(f"reading {file_name=}")
     with open(file_name, "r", encoding="utf-8") as f:
         reader = csv.reader(f, delimiter=delimiter)
@@ -41,8 +51,7 @@ def get_confirmed_from_xlsx(file_name, column_index, delimiter, with_header):
 
 
 def __get_latest_confirmed_list__():
-    """  # name templete that gets updated and get the latest for the file name patern
-    """
+    """# name templete that gets updated and get the latest for the file name patern"""
     max_time = 0
     for f in glob.glob(CONFIRMED_EMPLOYEES_FILE[0]):
         file_time = os.path.getctime(f)
@@ -59,26 +68,25 @@ def check_vailid_email(emails):
 
 
 def main() -> int:
-    """proces employees list and remove confirmed """
+    """proces employees list and remove confirmed"""
     all_emails = get_emails_from_csv(*EMPLOYEES_EMAIL_FILE)
-    #print(next(iter(all_emails)))
+    # print(next(iter(all_emails)))
 
     __get_latest_confirmed_list__()
     confirmed_emails = get_confirmed_from_xlsx(*CONFIRMED_EMPLOYEES_FILE)
-    #print(next(iter(confirmed_emails)))
+    # print(next(iter(confirmed_emails)))
 
     pending_emails = sorted(all_emails - confirmed_emails)
     print("PENDING:", len(pending_emails))
     with open(PENDING_EMAIL_FILE, "w", encoding="utf-8") as f:
-            writer = csv.writer(f)
-            # writer.writerow(header)
-            writer.writerows(zip(pending_emails))
-
+        writer = csv.writer(f)
+        # writer.writerow(header)
+        writer.writerows(zip(pending_emails))
 
     pending_emails_txt = "; ".join(pending_emails)
     print(pending_emails_txt)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     logging.getLogger().setLevel(logging.INFO)
     main()
