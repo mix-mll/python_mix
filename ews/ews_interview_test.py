@@ -8,23 +8,17 @@ def funX(input):
     index = 0
     count = 1
     while index < len(input):
-        # deb = f"{index=}{count=}{letter}"
-        # print (deb)
         letter = input[index]
-        if index == len(input) - 1: # last case
-            result = result + f"{letter}{count}"
+        if index == len(input) - 1:
+            result += f"{letter}{count}"
             break
-
         if letter == input[index + 1]:
             count+= 1
         else:
-            result = result + f"{letter}{count}"
-            # print (result)
+            result += f"{letter}{count}"
             letter = input[index + 1]
             count = 1
-        
         index+=1
-    
     return result
 
 
@@ -33,30 +27,25 @@ def fun(input):
     index = 0
     count = 1
     while index < len(input):
-        # deb = f"{index=}{count=}{letter}"
-        # print (deb)
         letter = input[index]
-        if index == len(input) - 1: # last case
-            result = result + f"{letter}{count}"
-            break
-
-        if letter == input[index + 1]:
-            count+= 1
+        if  index + 1 < len(input):
+            if letter == input[index + 1]:
+                count += 1
+            else:
+                result += f"{letter}{count}"
+                letter = input[index + 1]
+                count = 1
         else:
-            result = result + f"{letter}{count}"
-            # print (result)
-            letter = input[index + 1]
-            count = 1
-        
-        index+=1
-    
+            result += f"{letter}{count}"
+        index+=1    
     return result
+
 
 def test_fun():
     cases = {
-        "aabbba": "a2b3a1",
         "a": "a1",
         "aa": "a2",
+        "aabbba": "a2b3a1",
         "ab": "a1b1",
         "abc": "a1b1c1",
         "abccc": "a1b1c3",
@@ -64,5 +53,5 @@ def test_fun():
     }
     for input, expected_output in cases.items():
         actual_output = fun(input)
-        logging.info(f"{expected_output} {actual_output}")
+        logging.info(f"{input} {expected_output} {actual_output}")
         assert expected_output == actual_output
