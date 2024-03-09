@@ -43,7 +43,7 @@ def funX0(input):
     return result
 
 
-def fun(input):
+def funY(input):
     result = ""
     letter = input[0]
     count = 1
@@ -57,6 +57,21 @@ def fun(input):
     else:
         result += f"{letter}{count}"
 
+    return result
+
+
+def fun(input):
+    result = ""
+    letter = input[0]
+    count = 1
+    for next_letter in input[1:]:
+        if letter == next_letter:
+            count += 1
+        else:
+            result += f"{letter}{count}"
+            letter = next_letter
+            count = 1
+    result += f"{letter}{count}"
     return result
 
 
