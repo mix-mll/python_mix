@@ -1,0 +1,13 @@
+username = "ver"
+port = 1111
+database = {name='mydb_ver', schema='ver'}
+
+[servers]
+
+[servers.alpha]
+ip = "ver_10.0.0.1"
+role = "ver_frontend"
+
+[servers.beta]
+ip = "ver_10.0.0.2"
+role = "ver_backend"

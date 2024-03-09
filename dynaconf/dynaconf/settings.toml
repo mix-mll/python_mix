@@ -1,0 +1,13 @@
+username = "admin"
+port = 5555
+database = {name='mydb', schema='main'}
+
+[servers]
+
+[servers.alpha]
+ip = "10.0.0.1"
+role = "frontend"
+
+[servers.beta]
+ip = "10.0.0.2"
+role = "backend"
