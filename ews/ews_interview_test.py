@@ -24,7 +24,7 @@ def funX(input):
     return result
 
 
-def fun(input):
+def funX0(input):
     result = ""
     index = 0
     count = 1
@@ -43,15 +43,31 @@ def fun(input):
     return result
 
 
+def fun(input):
+    result = ""
+    letter = input[0]
+    count = 1
+    for i in range(1, len(input)):
+        if letter == input[i]:
+            count += 1
+        else:
+            result += f"{letter}{count}"
+            letter = input[i]
+            count = 1
+    else:
+        result += f"{letter}{count}"
+
+    return result
+
+
 def test_fun():
     cases = {
-        "a": "a1",
-        "aa": "a2",
         "aabbba": "a2b3a1",
         "ab": "a1b1",
         "abc": "a1b1c1",
+        "a": "a1",
+        "aa": "a2",
         "abccc": "a1b1c3",
-        "": "",
     }
     for input, expected_output in cases.items():
         actual_output = fun(input)
