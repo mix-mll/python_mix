@@ -1,10 +1,16 @@
-from pdf2image import convert_from_path
+from PyPDF2 import PdfReader, PdfWriter
 
-file_name = "X"
+file_name = "AA4589561"
+# full_path = "/Users/marioloeralozano/C/mix-mll/python_mix"
 pdf_file = f"pdf/input_file/{file_name}.pdf"
-output_path = "pdf/pages"
+print(f"{pdf_file=}")
 
-pages = convert_from_path(pdf_file, 500)
 
-for count, page in enumerate(pages):
-    page.save(f"{output_path}/{file_name}_{count}.jpg", "JPEG")
+inputpdf = PdfReader(open(pdf_file, "rb"))
+
+for i in range(len(inputpdf.pages)):
+    output = PdfWriter()
+    output.add_page(inputpdf.pages[i])
+    output_path = f"pdf/pages/{file_name}_{i}.pdf"
+    with open(output_path, "wb") as outputStream:
+        output.write(outputStream)
